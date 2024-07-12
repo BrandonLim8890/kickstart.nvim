@@ -3,7 +3,7 @@ return {
   dependencies = { 'nvim-tree/nvim-web-devicons', 'linrongbin16/lsp-progress.nvim' },
   opts = {
     options = {
-      theme = 'nord',
+      theme = 'nordic',
     },
     sections = {
       lualine_c = {

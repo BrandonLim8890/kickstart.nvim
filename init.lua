@@ -661,6 +661,7 @@ require('lazy').setup({
         }
       end,
       formatters_by_ft = {
+        python = { 'prettier', 'black' },
         lua = { 'stylua' },
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
@@ -785,16 +786,12 @@ require('lazy').setup({
     end,
   },
 
-  { -- You can easily change to a different colorscheme.
-    -- Change the name of the colorscheme plugin below, and then
-    -- change the command in the config to whatever the name of that colorscheme is.
-    --
-    -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
-    'arcticicestudio/nord-vim',
+  {
+    'AlexvZyl/nordic.nvim',
     lazy = false,
-    priority = 1000, -- Make sure to load this before all the other start plugins.
+    priority = 1000,
     config = function()
-      vim.cmd.colorscheme 'nord'
+      require('nordic').load()
     end,
   },
 
