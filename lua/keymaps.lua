@@ -14,6 +14,10 @@ vim.keymap.set('n', 'n', 'nzzzv')
 vim.keymap.set('n', 'N', 'Nzzzv')
 vim.keymap.set('n', '<leader>z', '<cmd>Centerpad<cr>', { silent = true, noremap = true })
 
+-- Save
+vim.keymap.set({ 'i', 'x', 'n', 's' }, '<C-s>', '<cmd>w<cr><esc>', { desc = 'Save File' })
+
+
 -- Buffer movemnt
 vim.keymap.set('n', '<leader>bd', ':bdel<Return>')
 
