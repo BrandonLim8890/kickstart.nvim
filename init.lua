@@ -240,6 +240,9 @@ require('lazy').setup({
   -- "gc" to comment visual regions/lines
   { 'numToStr/Comment.nvim', opts = {} },
 
+  -- for amazon java dev
+  { 'mfussenegger/nvim-jdtls' },
+
   -- Here is a more advanced example where we pass configuration
   -- options to `gitsigns.nvim`. This is equivalent to the following Lua:
   --    require('gitsigns').setup({ ... })
@@ -283,7 +286,6 @@ require('lazy').setup({
       require('which-key').register {
         ['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },
         ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
-        ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
         ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
         ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
         ['<leader>t'] = { name = '[T]oggle', _ = 'which_key_ignore' },
@@ -359,6 +361,10 @@ require('lazy').setup({
           --   i = { ['<c-enter>'] = 'to_fuzzy_refine' },
           -- },
           path_display = { 'smart' },
+          file_ignore_patterns = {
+            'node_modules',
+            'build',
+          },
         },
         -- pickers = {}
         extensions = {
@@ -503,7 +509,7 @@ require('lazy').setup({
 
           -- Rename the variable under your cursor.
           --  Most Language Servers support renaming across files, etc.
-          map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
+          map('<leader>cr', vim.lsp.buf.rename, '[C]ode [R]ename')
 
           -- Execute a code action, usually your cursor needs to be on top of an error
           -- or a suggestion from your LSP for this to activate.
@@ -577,6 +583,7 @@ require('lazy').setup({
       local servers = {
         pyright = {},
         tsserver = {},
+        jdtls = {},
         lua_ls = {
           settings = {
             Lua = {
@@ -610,11 +617,36 @@ require('lazy').setup({
         handlers = {
           function(server_name)
             local server = servers[server_name] or {}
-            -- This handles overriding only values explicitly passed
-            -- by the server configuration above. Useful when disabling
-            -- certain features of an LSP (for example, turning off formatting for tsserver)
-            server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-            require('lspconfig')[server_name].setup(server)
+            require('lspconfig')[server_name].setup {
+              cmd = server.cmd,
+              settings = server.settings,
+              filetypes = server.filetypes,
+              capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {}),
+            }
+          end,
+          jdtls = function()
+            require('lspconfig').jdtls.setup {
+              on_attach = function()
+                local bemol_dir = vim.fs.find({ '.bemol' }, { upward = true, type = 'directory' })[1]
+                local ws_folders_lsp = {}
+                if bemol_dir then
+                  local file = io.open(bemol_dir .. '/ws_root_folders', 'r')
+                  if file then
+                    for line in file:lines() do
+                      table.insert(ws_folders_lsp, line)
+                    end
+                    file:close()
+                  end
+                end
+                for _, line in ipairs(ws_folders_lsp) do
+                  vim.lsp.buf.add_workspace_folder(line)
+                end
+              end,
+              cmd = {
+                'jdtls',
+                '--jvm-arg=-javaagent:' .. require('mason-registry').get_package('jdtls'):get_install_path() .. '/lombok.jar',
+              },
+            }
           end,
         },
       }
