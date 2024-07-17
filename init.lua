@@ -240,9 +240,6 @@ require('lazy').setup({
   -- "gc" to comment visual regions/lines
   { 'numToStr/Comment.nvim', opts = {} },
 
-  -- for amazon java dev
-  { 'mfussenegger/nvim-jdtls' },
-
   -- Here is a more advanced example where we pass configuration
   -- options to `gitsigns.nvim`. This is equivalent to the following Lua:
   --    require('gitsigns').setup({ ... })
@@ -617,36 +614,8 @@ require('lazy').setup({
         handlers = {
           function(server_name)
             local server = servers[server_name] or {}
-            require('lspconfig')[server_name].setup {
-              cmd = server.cmd,
-              settings = server.settings,
-              filetypes = server.filetypes,
-              capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {}),
-            }
-          end,
-          jdtls = function()
-            require('lspconfig').jdtls.setup {
-              on_attach = function()
-                local bemol_dir = vim.fs.find({ '.bemol' }, { upward = true, type = 'directory' })[1]
-                local ws_folders_lsp = {}
-                if bemol_dir then
-                  local file = io.open(bemol_dir .. '/ws_root_folders', 'r')
-                  if file then
-                    for line in file:lines() do
-                      table.insert(ws_folders_lsp, line)
-                    end
-                    file:close()
-                  end
-                end
-                for _, line in ipairs(ws_folders_lsp) do
-                  vim.lsp.buf.add_workspace_folder(line)
-                end
-              end,
-              cmd = {
-                'jdtls',
-                '--jvm-arg=-javaagent:' .. require('mason-registry').get_package('jdtls'):get_install_path() .. '/lombok.jar',
-              },
-            }
+            server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
+            require('lspconfig')[server_name].setup(server)
           end,
         },
       }
