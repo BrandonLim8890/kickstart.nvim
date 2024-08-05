@@ -27,6 +27,12 @@ vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right win
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
+vim.keymap.set('n', '<leader>wv', '<C-w>v', { desc = 'Split window vertically' })
+vim.keymap.set('n', '<leader>wh', '<C-w>s', { desc = 'Split window horizontally' })
+vim.keymap.set('n', '<leader>we', '<C-w>=', { desc = 'Make splits equal size' })
+vim.keymap.set('n', '<leader>wx', '<C-w>q', { desc = 'Close current split' })
+
+
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
 -- -- is not what someone will guess without a bit more experience.
