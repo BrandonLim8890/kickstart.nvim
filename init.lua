@@ -772,7 +772,15 @@ require('lazy').setup({
     lazy = false,
     priority = 1000,
     config = function()
-      require('nordic').load()
+      require('nordic').setup {
+        override = {
+          Visual = {
+            bg = '#60728A', -- Choose a color you like.,
+            bold = false, -- Or false.,
+          },
+        },
+      }
+      vim.cmd.colorscheme 'nordic'
     end,
   },
 
