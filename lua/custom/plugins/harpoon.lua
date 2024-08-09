@@ -1,19 +1,14 @@
 return {
   'ThePrimeagen/harpoon',
   branch = 'harpoon2',
-  ops = {
+  opts = {
     menu = {
       width = vim.api.nvim_win_get_width(0) - 4,
     },
     settings = {
       save_on_toggle = true,
-      sync_on_ui_close = true,
     },
   },
-  config = function()
-    require('telescope').load_extension 'harpoon'
-    -- require('harpoon'):setup()
-  end,
   keys = {
     {
       '<leader>a',
