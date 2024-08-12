@@ -33,6 +33,10 @@ vim.keymap.set('n', '<leader>we', '<C-w>=', { desc = 'Make splits equal size' })
 vim.keymap.set('n', '<leader>wq', '<C-w>q', { desc = 'Close current window' })
 vim.keymap.set('n', '<leader>wo', '<C-w>o', { desc = 'Close all other windows' })
 
+-- Quickfix commands
+vim.keymap.set('n', "<leader><C-n>", "<cmd>cnext<CR>zz", { desc = 'Go to next quickfix item' })
+vim.keymap.set('n', "<leader><C-p>", "<cmd>cprev<CR>zz", { desc = 'Go to previous quickfix item' })
+
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
