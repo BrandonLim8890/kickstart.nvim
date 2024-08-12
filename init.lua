@@ -356,6 +356,11 @@ require('lazy').setup({
             'node_modules',
             'build',
           },
+          mappings = {
+            i = {
+              ['<C-q>'] = require('telescope.actions').smart_send_to_qflist + require('telescope.actions').open_qflist,
+            },
+          },
         },
         -- pickers = {}
         extensions = {
