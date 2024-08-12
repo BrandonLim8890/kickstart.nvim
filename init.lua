@@ -775,7 +775,7 @@ require('lazy').setup({
       require('nordic').setup {
         override = {
           Visual = {
-            bg = '#60728A', -- Choose a color you like.,
+            bg = '#2E3440', -- Choose a color you like.
             bold = false, -- Or false.,
           },
         },
