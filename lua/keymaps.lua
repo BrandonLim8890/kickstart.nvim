@@ -2,9 +2,9 @@
 vim.keymap.set('n', '<leader>pv', vim.cmd.Ex)
 
 vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv")
+vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv")
 vim.keymap.set('n', '<C-d>', '<C-d>zz')
 vim.keymap.set('n', '<C-u>', '<C-u>zz')
-vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv")
 vim.keymap.set('x', '<leader>p', [["_dP]])
 vim.keymap.set('n', '<leader>Y', [["+Y]])
 vim.keymap.set({ 'n', 'v' }, '<leader>y', [["+y]])
@@ -30,7 +30,8 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 vim.keymap.set('n', '<leader>wv', '<C-w>v', { desc = 'Split window vertically' })
 vim.keymap.set('n', '<leader>wh', '<C-w>s', { desc = 'Split window horizontally' })
 vim.keymap.set('n', '<leader>we', '<C-w>=', { desc = 'Make splits equal size' })
-vim.keymap.set('n', '<leader>wq', '<C-w>q', { desc = 'Close current split' })
+vim.keymap.set('n', '<leader>wq', '<C-w>q', { desc = 'Close current window' })
+vim.keymap.set('n', '<leader>wo', '<C-w>o', { desc = 'Close all other windows' })
 
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
