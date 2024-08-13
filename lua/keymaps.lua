@@ -32,6 +32,8 @@ vim.keymap.set('n', '<leader>wh', '<C-w>s', { desc = 'Split window horizontally'
 vim.keymap.set('n', '<leader>we', '<C-w>=', { desc = 'Make splits equal size' })
 vim.keymap.set('n', '<leader>wq', '<C-w>q', { desc = 'Close current window' })
 vim.keymap.set('n', '<leader>wo', '<C-w>o', { desc = 'Close all other windows' })
+vim.keymap.set('n', '<leader>ww', '<C-w>|', { desc = 'Maximize window width' })
+vim.keymap.set('n', '<leader>w_', '<C-w>_', { desc = 'Maximize window height' })
 
 -- Quickfix commands
 vim.keymap.set('n', "<leader><C-n>", "<cmd>cnext<CR>zz", { desc = 'Go to next quickfix item' })
