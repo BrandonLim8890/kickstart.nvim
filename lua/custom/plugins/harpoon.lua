@@ -53,5 +53,12 @@ return {
       end,
       desc = 'Go to fourth harpoon mark',
     },
+    {
+      '<leader><c-;>',
+      function()
+        require('harpoon'):list():select(5)
+      end,
+      desc = 'Go to fifth harpoon mark',
+    },
   },
 }
