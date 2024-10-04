@@ -1,40 +1,71 @@
 return {
-  "folke/noice.nvim",
-  event = "VeryLazy",
+  'folke/noice.nvim',
+  event = 'VeryLazy',
   opts = {
     lsp = {
+      -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
       override = {
-        ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
-        ["vim.lsp.util.stylize_markdown"] = true,
-        ["cmp.entry.get_documentation"] = true,
-      },
-    },
-    routes = {
-      {
-        filter = {
-          event = "msg_show",
-          any = {
-            { find = "%d+L, %d+B" },
-            { find = "; after #%d+" },
-            { find = "; before #%d+" },
-          },
-        },
-        view = "mini",
+        ['vim.lsp.util.convert_input_to_markdown_lines'] = true,
+        ['vim.lsp.util.stylize_markdown'] = true,
+        ['cmp.entry.get_documentation'] = true, -- requires hrsh7th/nvim-cmp
       },
     },
     presets = {
-      bottom_search = true,
-      command_palette = true,
-      long_message_to_split = true,
+      command_palette = true, -- position the cmdline and popupmenu together
+      long_message_to_split = true, -- long messages will be sent to a split
+      inc_rename = false, -- enables an input dialog for inc-rename.nvim
+      lsp_doc_border = false, -- add a border to hover docs and signature help
+    },
+    views = {
+      cmdline_popup = {
+        position = {
+          row = 5,
+          col = '50%',
+        },
+        size = {
+          width = 60,
+          height = 'auto',
+        },
+      },
+      popupmenu = {
+        relative = 'editor',
+        position = {
+          row = 8,
+          col = '50%',
+        },
+        size = {
+          width = 60,
+          height = 10,
+        },
+        border = {
+          style = 'rounded',
+          padding = { 0, 1 },
+        },
+        win_options = {
+          winhighlight = { Normal = 'Normal', FloatBorder = 'DiagnosticInfo' },
+        },
+      },
     },
   },
-  config = function(_, opts)
-    -- HACK: noice shows messages from before it was enabled,
-    -- but this is not ideal when Lazy is installing plugins,
-    -- so clear the messages in this case.
-    if vim.o.filetype == "lazy" then
-      vim.cmd([[messages clear]])
-    end
-    require("noice").setup(opts)
-  end,
+  dependencies = {
+    -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
+    'MunifTanjim/nui.nvim',
+    -- OPTIONAL:
+    --   `nvim-notify` is only needed, if you want to use the notification view.
+    --   If not available, we use `mini` as the fallback
+    {
+      'rcarriga/nvim-notify',
+      name = 'notify',
+      opts = {
+        top_down = false,
+        stages = 'static',
+        max_height = function()
+          return math.floor(vim.o.lines * 0.75)
+        end,
+        max_width = function()
+          return math.floor(vim.o.columns * 0.75)
+        end,
+      },
+    },
+  },
 }

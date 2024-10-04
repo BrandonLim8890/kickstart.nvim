@@ -26,35 +26,35 @@ return {
       desc = '[S]earch Harpoon [M]arks',
     },
     {
-      '<leader><c-h>',
+      '<leader>H',
       function()
         require('harpoon'):list():select(1)
       end,
       desc = 'Go to first harpoon mark',
     },
     {
-      '<leader><c-j>',
+      '<leader>J',
       function()
         require('harpoon'):list():select(2)
       end,
       desc = 'Go to second harpoon mark',
     },
     {
-      '<leader><c-k>',
+      '<leader>K',
       function()
         require('harpoon'):list():select(3)
       end,
       desc = 'Go to third harpoon mark',
     },
     {
-      '<leader><c-l>',
+      '<leader>L',
       function()
         require('harpoon'):list():select(4)
       end,
       desc = 'Go to fourth harpoon mark',
     },
     {
-      '<leader><c-;>',
+      '<leader>:',
       function()
         require('harpoon'):list():select(5)
       end,

@@ -17,7 +17,6 @@ vim.keymap.set('n', '<leader>z', '<cmd>Centerpad<cr>', { silent = true, noremap 
 -- Save
 vim.keymap.set({ 'i', 'x', 'n', 's' }, '<C-s>', '<cmd>w<cr><esc>', { desc = 'Save File' })
 
-
 -- Buffer movemnt
 vim.keymap.set('n', '<leader>bd', ':bdel<Return>')
 
@@ -36,9 +35,12 @@ vim.keymap.set('n', '<leader>ww', '<C-w>|', { desc = 'Maximize window width' })
 vim.keymap.set('n', '<leader>w_', '<C-w>_', { desc = 'Maximize window height' })
 
 -- Quickfix commands
-vim.keymap.set('n', "<leader><C-n>", "<cmd>cnext<CR>zz", { desc = 'Go to next quickfix item' })
-vim.keymap.set('n', "<leader><C-p>", "<cmd>cprev<CR>zz", { desc = 'Go to previous quickfix item' })
+vim.keymap.set('n', '<leader><C-n>', '<cmd>cnext<CR>zz', { desc = 'Go to next quickfix item' })
+vim.keymap.set('n', '<leader><C-p>', '<cmd>cprev<CR>zz', { desc = 'Go to previous quickfix item' })
 
+-- Diagnostic commands
+vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
+vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
