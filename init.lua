@@ -369,13 +369,13 @@ require('lazy').setup({
         },
         pickers = {
           live_grep = {
-            file_ignore_patterns = { 'node_modules', '.git', '.venv' },
+            file_ignore_patterns = { 'node_modules', '.git' },
             additional_args = function(_)
               return { '--hidden' }
             end,
           },
           find_files = {
-            file_ignore_patterns = { 'node_modules', '.git', '.venv' },
+            file_ignore_patterns = { 'node_modules', '.git' },
             hidden = true,
           },
         },
@@ -810,6 +810,7 @@ require('lazy').setup({
 
   { -- Collection of various small independent plugins/modules
     'echasnovski/mini.nvim',
+    dependencies = { 'JoosepAlviste/nvim-ts-context-commentstring' },
     config = function()
       -- Better Around/Inside textobjects
       --
@@ -825,6 +826,14 @@ require('lazy').setup({
       -- - sd'   - [S]urround [D]elete [']quotes
       -- - sr)'  - [S]urround [R]eplace [)] [']
       require('mini.surround').setup()
+
+      require('mini.comment').setup {
+        options = {
+          custom_commentstring = function()
+            return require('ts_context_commentstring.internal').calculate_commentstring() or vim.bo.commentstring
+          end,
+        },
+      }
 
       -- Simple and easy statusline.
       --  You could remove this setup call if you don't like it,
@@ -849,7 +858,7 @@ require('lazy').setup({
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     opts = {
-      ensure_installed = { 'typescript', 'javascript', 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'vim', 'vimdoc', 'java', 'python', 'tsx' },
+      ensure_installed = { 'typescript', 'javascript', 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'vim', 'vimdoc', 'java', 'python', 'tsx' },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
