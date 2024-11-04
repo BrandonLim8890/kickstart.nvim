@@ -392,9 +392,6 @@ require('lazy').setup({
               reverse_directories = false,
             },
           },
-          file_ignore_patterns = {
-            'node_modules',
-          },
           mappings = {
             i = {
               ['<C-q>'] = require('telescope.actions').smart_send_to_qflist + require('telescope.actions').open_qflist,
@@ -649,6 +646,7 @@ require('lazy').setup({
       local servers = {
         pyright = {},
         jdtls = {},
+        tsserver = {},
         lua_ls = {
           settings = {
             Lua = {
