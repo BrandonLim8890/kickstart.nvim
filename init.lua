@@ -708,13 +708,15 @@ require('lazy').setup({
     opts = {
       notify_on_error = false,
       formatters_by_ft = {
-        python = { 'prettier', 'black' },
+        python = { 'black' },
         lua = { 'stylua' },
-        javascript = { { 'prettierd', 'prettier' } },
-        typescript = { 'prettier' },
-        javascriptreact = { { 'prettierd', 'prettier' } },
-        typescriptreact = { 'prettier' },
-        java = { 'prettier' },
+        javascript = { 'prettierd' },
+        typescript = { 'prettierd' },
+        javascriptreact = { 'prettierd'  },
+        typescriptreact = { 'prettierd' },
+        html = { 'prettierd' },
+        css = { 'prettierd' },
+        java = { 'prettierd' },
       },
     },
   },
@@ -969,5 +971,7 @@ require('lazy').setup({
 })
 
 require 'keymaps'
+require 'options'
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
+

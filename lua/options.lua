@@ -2,8 +2,10 @@ local opt = vim.opt
 
 -- Tabs & Indentation
 opt.tabstop = 2
+opt.shiftwidth = 2
 opt.autoindent = true
 opt.expandtab = true
+opt.smarttab = true
 
 -- Cursor Line
 opt.cursorline = true
