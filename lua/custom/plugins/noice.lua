@@ -6,7 +6,7 @@ return {
       -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
       override = {
         ['vim.lsp.util.convert_input_to_markdown_lines'] = true,
-        ['vim.lsp.util.stylize_markdown'] = true,
+        -- vim.lsp.util.stylize_markdown removed: deprecated in nvim 0.12
         ['cmp.entry.get_documentation'] = true, -- requires hrsh7th/nvim-cmp
       },
     },
@@ -64,6 +64,13 @@ return {
         end,
         max_width = function()
           return math.floor(vim.o.columns * 0.75)
+        end,
+        -- nvim-notify has a treesitter crash in nvim 0.12 (TSNode:range() nil).
+        -- Detaching treesitter from the notification buffer on open is the workaround
+        -- until nvim-notify ships a proper fix upstream.
+        on_open = function(win)
+          local buf = vim.api.nvim_win_get_buf(win)
+          pcall(vim.treesitter.stop, buf)
         end,
       },
     },

@@ -1,5 +1,4 @@
 -- Custom keymaps for movement
-vim.keymap.set('n', '<leader>pv', vim.cmd.Ex)
 
 vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv")
 vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv")
@@ -20,26 +19,25 @@ vim.keymap.set({ 'i', 'x', 'n', 's' }, '<C-s>', '<cmd>w<cr><esc>', { desc = 'Sav
 vim.keymap.set('n', '<leader>bd', ':bdel<Return>')
 
 -- Window commands
-vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
-vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
-vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
-vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+-- vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
+-- vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
+-- vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
+-- vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
 vim.keymap.set('n', '<leader>wv', '<C-w>v', { desc = 'Split window vertically' })
 vim.keymap.set('n', '<leader>wh', '<C-w>s', { desc = 'Split window horizontally' })
 vim.keymap.set('n', '<leader>we', '<C-w>=', { desc = 'Make splits equal size' })
 vim.keymap.set('n', '<leader>wq', '<C-w>q', { desc = 'Close current window' })
 vim.keymap.set('n', '<leader>wo', '<C-w>o', { desc = 'Close all other windows' })
-vim.keymap.set('n', '<leader>ww', '<C-w>|', { desc = 'Maximize window width' })
+vim.keymap.set('n', '<leader>wm', '<C-w>|', { desc = 'Maximize window width' })
 vim.keymap.set('n', '<leader>w_', '<C-w>_', { desc = 'Maximize window height' })
+vim.keymap.set('n', '<leader>ww', '<C-w>w', { desc = 'Cycle windows' })
+vim.keymap.set('n', '<leader>qa', '<cmd>qa<CR>', { desc = 'Quit all' })
 
--- Quickfix commands
-vim.keymap.set('n', '<leader><C-n>', '<cmd>cnext<CR>zz', { desc = 'Go to next quickfix item' })
-vim.keymap.set('n', '<leader><C-p>', '<cmd>cprev<CR>zz', { desc = 'Go to previous quickfix item' })
-
--- Diagnostic commands
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
+-- Diagnostic navigation (fast jumping without opening lists)
+-- Use [q/]q (from trouble.lua) to navigate when trouble/quickfix lists are open
+vim.keymap.set('n', '[d', function() vim.diagnostic.jump { count = -1 } end, { desc = 'Go to previous [D]iagnostic message' })
+vim.keymap.set('n', ']d', function() vim.diagnostic.jump { count = 1 } end, { desc = 'Go to next [D]iagnostic message' })
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
