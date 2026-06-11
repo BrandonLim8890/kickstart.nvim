@@ -105,12 +105,9 @@ return {
       'nvim-telescope/telescope.nvim',
     },
     config = function()
-      local lspconfig_util = require 'lspconfig.util'
-      local get_git_root = lspconfig_util.root_pattern '.git'
-
       vim.keymap.set('n', '<leader>gs', function()
-        local buffer_path = vim.api.nvim_buf_get_name(0)
-        local git_root = get_git_root(buffer_path)
+        local buffer_path = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ':p')
+        local git_root = vim.fs.root(buffer_path, '.git')
         require('neogit').open { cwd = git_root, kind = 'split_below_all' }
       end)
       vim.keymap.set('n', 'gh', '<cmd>diffget //2<CR>')
@@ -154,8 +151,6 @@ return {
     config = function()
       require('litee.gh').setup()
 
-      local lspconfig_util = require 'lspconfig.util'
-      local get_git_root = lspconfig_util.root_pattern '.git'
       local Path = require 'plenary.path'
 
       local function resolve_repo_context()
@@ -164,7 +159,7 @@ return {
           vim.notify('Buffer has no file path', vim.log.levels.WARN)
           return nil, nil
         end
-        local git_root = get_git_root(filepath)
+        local git_root = vim.fs.root(filepath, '.git')
         if not git_root then
           vim.notify('Current buffer is not inside a git repo', vim.log.levels.WARN)
           return nil, nil
@@ -178,12 +173,12 @@ return {
         return git_root
       end
 
-      local function go_to_github(path, cwd)
-        vim.fn.jobstart({ 'gh', 'browse', path }, { cwd = cwd })
+      local function go_to_github(git_root, rel_path)
+        vim.fn.jobstart({ 'gh', 'browse', rel_path }, { cwd = git_root })
       end
 
-      local function copy_github_url(path, cwd)
-        local result = vim.system({ 'gh', 'browse', '--no-browser', path }, { cwd = cwd }):wait()
+      local function copy_github_url(git_root, rel_path)
+        local result = vim.system({ 'gh', 'browse', '--no-browser', rel_path }, { cwd = git_root }):wait()
         local url = (result.stdout or ''):gsub('%s+$', '')
         vim.fn.setreg('+', url)
         vim.notify('Copied to clipboard: ' .. url, vim.log.levels.INFO)
