@@ -184,6 +184,14 @@ return {
       vim.keymap.set('n', '<leader>ap', function()
         require('99.extensions.telescope').select_provider()
       end, { desc = 'AI: select provider' })
+
+      vim.keymap.set('n', '<leader>al', function()
+        _99.view_logs()
+      end, { desc = 'AI: view request logs' })
+
+      vim.keymap.set('n', '<leader>ar', function()
+        _99.open()
+      end, { desc = 'AI: reopen past request results' })
     end,
   },
 }
