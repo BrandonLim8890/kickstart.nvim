@@ -16,7 +16,7 @@ return {
       require('fff').setup(opts)
 
       -- Send to Trouble qflist instead of native copen
-      local picker_ui = require 'fff.picker_ui'
+      local picker_ui = require 'fff.picker_ui.picker_ui'
       local original_stq = picker_ui.send_to_quickfix
       picker_ui.send_to_quickfix = function()
         original_stq()
@@ -38,22 +38,30 @@ return {
     keys = {
       {
         '<leader>sf',
-        function() require('fff').find_files() end,
+        function()
+          require('fff').find_files()
+        end,
         desc = '[S]earch [F]iles',
       },
       {
         '<leader>sg',
-        function() require('fff').live_grep() end,
+        function()
+          require('fff').live_grep()
+        end,
         desc = '[S]earch by [G]rep',
       },
       {
         '<leader>sw',
-        function() require('fff').live_grep { query = vim.fn.expand '<cword>' } end,
+        function()
+          require('fff').live_grep { query = vim.fn.expand '<cword>' }
+        end,
         desc = '[S]earch current [W]ord',
       },
       {
         '<leader>sw',
-        function() require('fff').live_grep { query = vim.fn.expand '<cword>' } end,
+        function()
+          require('fff').live_grep { query = vim.fn.expand '<cword>' }
+        end,
         mode = 'v',
         desc = '[S]earch current [W]ord',
       },
@@ -69,7 +77,9 @@ return {
       {
         'nvim-telescope/telescope-fzf-native.nvim',
         build = 'make',
-        cond = function() return vim.fn.executable 'make' == 1 end,
+        cond = function()
+          return vim.fn.executable 'make' == 1
+        end,
       },
       { 'nvim-telescope/telescope-ui-select.nvim' },
       { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
@@ -82,17 +92,23 @@ return {
           },
           mappings = {
             i = {
-              ['<C-q>'] = function(...) require('trouble.sources.telescope').open(...) end,
+              ['<C-q>'] = function(...)
+                require('trouble.sources.telescope').open(...)
+              end,
             },
             n = {
-              ['<C-q>'] = function(...) require('trouble.sources.telescope').open(...) end,
+              ['<C-q>'] = function(...)
+                require('trouble.sources.telescope').open(...)
+              end,
             },
           },
         },
         pickers = {
           live_grep = {
             file_ignore_patterns = { 'node_modules', '.git', '^build/' },
-            additional_args = function(_) return { '--hidden' } end,
+            additional_args = function(_)
+              return { '--hidden' }
+            end,
           },
           find_files = {
             file_ignore_patterns = { 'node_modules', '.git', '^build/' },
@@ -116,9 +132,7 @@ return {
         callback = function(event)
           local buf = event.buf
           vim.keymap.set('n', 'grr', builtin.lsp_references, { buffer = buf, desc = '[G]oto [R]eferences' })
-          vim.keymap.set('n', 'gri', builtin.lsp_implementations, { buffer = buf, desc = '[G]oto [I]mplementation' })
-          vim.keymap.set('n', 'grd', builtin.lsp_definitions, { buffer = buf, desc = '[G]oto [D]efinition' })
-          vim.keymap.set('n', 'gd', builtin.lsp_definitions, { buffer = buf, desc = '[G]oto [D]efinition' })
+          -- vim.keymap.set('n', 'gd', builtin.lsp_definitions, { buffer = buf, desc = '[G]oto [D]efinition' })
           vim.keymap.set('n', 'grt', builtin.lsp_type_definitions, { buffer = buf, desc = '[G]oto [T]ype Definition' })
           vim.keymap.set('n', 'gO', builtin.lsp_document_symbols, { buffer = buf, desc = 'Open Document Symbols' })
           vim.keymap.set('n', 'gW', builtin.lsp_dynamic_workspace_symbols, { buffer = buf, desc = 'Open Workspace Symbols' })
@@ -157,7 +171,9 @@ return {
           builtin.git_status { cwd = dirs[1] }
         else
           vim.ui.select(dirs, { prompt = 'Git status for repo:' }, function(choice)
-            if choice then builtin.git_status { cwd = choice } end
+            if choice then
+              builtin.git_status { cwd = choice }
+            end
           end)
         end
       end, { desc = '[S]earch by Git S[T]atus' })
