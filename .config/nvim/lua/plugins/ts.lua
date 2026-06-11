@@ -117,6 +117,21 @@ local function setup_hubspot()
     vim.cmd 'lsp restart'
   end, { desc = 'Bend Restart' })
 
+  vim.keymap.set('n', '<leader>la', function()
+    local bufpath = vim.api.nvim_buf_get_name(0)
+    local cwd = vim.fn.getcwd()
+    local relative = string.sub(bufpath, #cwd + 2)
+    local segment = relative:match '^([^/]+)'
+    if not segment then
+      vim.notify('[BendAddDir] buffer is directly in cwd, no subdirectory to add', vim.log.levels.WARN)
+      return
+    end
+    local abs_dir = cwd .. '/' .. segment
+    vim.cmd('BendAddDir ' .. abs_dir)
+    vim.cmd 'BendReset'
+    vim.cmd 'lsp restart'
+  end, { desc = 'Bend Add Dir' })
+
   vim.keymap.set('n', '<leader>cp', function()
     local view = vim.fn.winsaveview()
     vim.cmd(string.format("%%!bash %s '%s'", FORCEABSOLUTE_SCRIPT, vim.fn.expand '%:p:h'))

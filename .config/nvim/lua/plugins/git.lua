@@ -159,7 +159,7 @@ return {
       local Path = require 'plenary.path'
 
       local function resolve_repo_context()
-        local filepath = vim.api.nvim_buf_get_name(0)
+        local filepath = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ':p')
         if filepath == '' then
           vim.notify('Buffer has no file path', vim.log.levels.WARN)
           return nil, nil
