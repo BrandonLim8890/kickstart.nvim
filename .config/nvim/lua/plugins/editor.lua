@@ -126,7 +126,7 @@ return {
     opts = {},
     keys = {
       {
-        'gd',
+        '<leader>pd',
         function()
           require('overlook.api').peek_definition()
         end,
