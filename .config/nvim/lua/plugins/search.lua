@@ -163,6 +163,55 @@ return {
       end, { desc = '[S]earch [N]eovim files' })
       vim.keymap.set('n', '<leader>shf', '<cmd>Telescope find_files no_ignore=true<CR>', { desc = '[S]earch [H]idden [F]iles' })
       vim.keymap.set('n', '<leader>si', '<cmd>I18nPicker<CR>', { desc = '[S]earch [I]18n translations' })
+      vim.keymap.set('n', '<leader>sq', function()
+        local pickers = require 'telescope.pickers'
+        local finders = require 'telescope.finders'
+        local conf = require('telescope.config').values
+        local actions = require 'telescope.actions'
+        local action_state = require 'telescope.actions.state'
+
+        local lists = {}
+        for i = 1, 10 do
+          local qf = vim.fn.getqflist { nr = i, id = 0, title = true, items = true }
+          if qf.id ~= 0 and #qf.items > 0 then
+            table.insert(lists, {
+              nr = i,
+              title = qf.title ~= '' and qf.title or ('qflist #' .. i),
+              count = #qf.items,
+            })
+          end
+        end
+
+        if #lists == 0 then
+          vim.notify('No quickfix history', vim.log.levels.INFO)
+          return
+        end
+
+        pickers.new({}, {
+          prompt_title = 'Quickfix History',
+          finder = finders.new_table {
+            results = lists,
+            entry_maker = function(entry)
+              return {
+                value = entry,
+                display = string.format('[%d] %s  (%d items)', entry.nr, entry.title, entry.count),
+                ordinal = entry.title,
+              }
+            end,
+          },
+          sorter = conf.generic_sorter {},
+          attach_mappings = function(prompt_bufnr)
+            actions.select_default:replace(function()
+              actions.close(prompt_bufnr)
+              local entry = action_state.get_selected_entry()
+              if not entry then return end
+              vim.fn.setqflist({}, 'a', { nr = entry.value.nr })
+              require('trouble').open 'qflist'
+            end)
+            return true
+          end,
+        }):find()
+      end, { desc = '[S]earch [Q]uickfix History' })
       vim.keymap.set('n', '<leader>st', function()
         local dirs = require 'bend_dirs'
         if #dirs == 0 then

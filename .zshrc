@@ -155,6 +155,51 @@ function bvim() {
   fi
 }
 
+function bupdate() {
+  local base="$PWD"
+
+  # Find all repos with a static_conf.json, show as "category/repo" relative to base
+  local selected
+  selected=$(find "$base" -mindepth 2 -maxdepth 2 -name "static_conf.json" \
+    | while read -r conf; do
+        local repo_dir
+        repo_dir=$(dirname "$conf")
+        echo "${repo_dir#$base/}"
+      done \
+    | sort \
+    | fzf --multi --prompt="Select repos: " --header="Tab to select multiple, Enter to confirm")
+
+  [ -z "$selected" ] && return
+
+  # Group selected repos by their parent dir, collecting all package names per parent
+  declare -A parent_to_packages
+  while IFS= read -r rel_path; do
+    local abs_path="$base/$rel_path"
+    local parent_dir
+    parent_dir=$(dirname "$abs_path")
+    local conf="$abs_path/static_conf.json"
+    local pkgs
+    pkgs=$(python3 -c "import json,sys; d=json.load(open('$conf')); print(' '.join(d.get('packages',[])))" 2>/dev/null)
+    if [[ -n "$pkgs" ]]; then
+      if [[ -n "${parent_to_packages[$parent_dir]}" ]]; then
+        parent_to_packages[$parent_dir]="${parent_to_packages[$parent_dir]} $pkgs"
+      else
+        parent_to_packages[$parent_dir]="$pkgs"
+      fi
+    fi
+  done <<< "$selected"
+
+  # Run bend install --update then bend generate-code per parent dir
+  for parent_dir in "${(@k)parent_to_packages}"; do
+    local pkgs="${parent_to_packages[$parent_dir]}"
+    echo "==> cd $parent_dir"
+    echo "==> bend install --update $pkgs"
+    (cd "$parent_dir" && bend install --update $pkgs) || { echo "bend install failed in $parent_dir"; return 1; }
+    echo "==> bend generate-code $pkgs"
+    (cd "$parent_dir" && bend generate-code $pkgs) || { echo "bend generate-code failed in $parent_dir"; return 1; }
+  done
+}
+
 function cleanup() {
   echo "Running cleanup tasks concurrently..."
   bend gc &

@@ -68,6 +68,18 @@ return {
         },
         lualine_x = {
           {
+            function()
+              local s = require 'bend_check_state'
+              if not s.running or not s.start_time then
+                return ''
+              end
+              local elapsed_ms = (vim.uv.hrtime() - s.start_time) / 1e6
+              local frame = math.floor(elapsed_ms / 200) % #s.chars + 1
+              return s.chars[frame] .. ' bend check'
+            end,
+            color = { fg = '#88C0D0' },
+          },
+          {
             'diagnostics',
             symbols = { error = ' ', warn = ' ', info = ' ', hint = ' ' },
             update_in_insert = true,
